@@ -13,21 +13,17 @@ int** createArray(int rows, int cols) {
     return array;
 }
 
-void addRow(int**& array, int& rows, int cols, int* newRow, int position) {
+void addRowToFront(int**& array, int& rows, int cols, int* newRow) {
     int** newArray = new int* [rows + 1];
 
-    for (int i = 0, j = 0; i <= rows; ++i) {
-        if (i == position) {
-            newArray[i] = new int[cols];
-            for (int k = 0; k < cols; ++k) {
-                newArray[i][k] = newRow[k];
-            }
-        }
-        else {
-            newArray[i] = array[j++];
-        }
+    newArray[0] = new int[cols];
+    for (int j = 0; j < cols; ++j) {
+        newArray[0][j] = newRow[j];
     }
 
+    for (int i = 0; i < rows; ++i) {
+        newArray[i + 1] = array[i];
+    }
 
     delete[] array;
     array = newArray;
@@ -62,11 +58,8 @@ int main() {
     printArray(array, rows, cols);
 
     int newRow[] = { 7, 8, 9 };
-    int position;
-    cout << "Enter the line:" << endl;
-    cin >> position;
 
-    addRow(array, rows, cols, newRow, position);
+    addRowToFront(array, rows, cols, newRow);
     printArray(array, rows, cols);
     freeArray(array, rows);
 
