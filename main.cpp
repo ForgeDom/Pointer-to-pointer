@@ -3,71 +3,72 @@
 using namespace std;
 
 int** createArray(int rows, int cols) {
-	int** array = new int* [rows];
-	for (int i = 0; i < rows; ++i) {
-		array[i] = new int[cols];
-		for (int j = 0; j < cols; ++j) {
-			array[i][j] = rand() % 10;
-		}
-	}
-	return array;
+    int** array = new int* [rows];
+    for (int i = 0; i < rows; ++i) {
+        array[i] = new int[cols];
+        for (int j = 0; j < cols; ++j) {
+            array[i][j] = rand() % 10;
+        }
+    }
+    return array;
 }
 
-void addRow(int**& array, int& rows, int cols, int* newRow, int position) {
-	int** newArray = new int* [rows + 1];
+void removeRow(int**& array, int& rows, int cols, int position) {
+    if (position < 0 || position >= rows) {
+        cout << "Wrong position" << endl;
+        return;
+    }
 
-	for (int i = 0, j = 0; i <= rows; ++i) {
-		if (i == position) {
-			newArray[i] = new int[cols];
-			for (int k = 0; k < cols; ++k) {
-				newArray[i][k] = newRow[k];
-			}
-		}
-		else {
-			newArray[i] = array[j++];
-		}
-	}
+    int** newArray = new int* [rows - 1];
 
-	delete[] array;
-	array = newArray;
-	rows++;
+    for (int i = 0, j = 0; i < rows; ++i) {
+        if (i != position) {
+            newArray[j++] = array[i];
+        }
+        else {
+            delete[] array[i];
+        }
+    }
+
+    delete[] array;
+    array = newArray;
+    rows--;
 }
 
 void freeArray(int** array, int rows) {
-	for (int i = 0; i < rows; ++i) {
-		delete[] array[i];
-	}
-	delete[] array;
+    for (int i = 0; i < rows; ++i) {
+        delete[] array[i];
+    }
+    delete[] array;
 }
 
 void printArray(int** array, int rows, int cols) {
-	for (int i = 0; i < rows; ++i) {
-		for (int j = 0; j < cols; ++j) {
-			cout << array[i][j] << " ";
-		}
-		cout << endl;
-	}
-	cout << endl;
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            cout << array[i][j] << " ";
+        }
+        cout << endl;
+    }
+    cout << endl;
 }
 
 int main() {
-	srand(time(0));
+    srand(time(0));
 
-	int rows = 2;
-	int cols = 3;
+    int rows = 5;
+    int cols = 3;
 
-	int** array = createArray(rows, cols);
+    int** array = createArray(rows, cols);
 
-	printArray(array, rows, cols);
+    printArray(array, rows, cols);
 
-	int newRow[] = { 7, 8, 9 };
-	int position;
-	cout << "Enter the line:" << endl;
-	cin >> position;
+    int position;
+    cin >> position;
+    removeRow(array, rows, cols, position);
 
-	addRow(array, rows, cols, newRow, position);
-	printArray(array, rows, cols);
-	freeArray(array, rows);
+    printArray(array, rows, cols);
 
-	return 0;
+    freeArray(array, rows);
+
+    return 0;
 }
