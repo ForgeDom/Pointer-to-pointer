@@ -13,71 +13,26 @@ int** createArray(int rows, int cols) {
 	return array;
 }
 
-void shiftRows(int** array, int rows, int cols, int shifts, bool left) {
-	int* temp = new int[cols];
-	shifts = shifts % cols;
+void removeColumn(int**& array, int rows, int& cols, int position) {
+	if (position < 0 || position > cols) {
+		cout << "Wrong line" << endl;
+		return;
+	}
 
 	for (int i = 0; i < rows; ++i) {
-		if (left) {
-			for (int j = 0; j < shifts; ++j) {
-				temp[j] = array[i][j];
-			}
-			for (int j = shifts; j < cols; ++j) {
-				array[i][j - shifts] = array[i][j];
-			}
-			for (int j = 0; j < shifts; ++j) {
-				array[i][cols - shifts + j] = temp[j];
+		int* newRow = new int[cols - 1];
+		for (int j = 0, k = 0; j < cols; ++j) {
+			if (j != position) {
+				newRow[k++] = array[i][j];
 			}
 		}
-		else {
-			for (int j = 0; j < shifts; ++j) {
-				temp[j] = array[i][cols - shifts + j];
-			}
-			for (int j = cols - 1; j >= shifts; --j) {
-				array[i][j] = array[i][j - shifts];
-			}
-			for (int j = 0; j < shifts; ++j) {
-				array[i][j] = temp[j];
-			}
-		}
+		delete[] array[i];
+		array[i] = newRow;
 	}
-
-	delete[] temp;
+	cols--;
 }
 
-void shiftColumns(int** array, int rows, int cols, int shifts, bool up) {
-	int* temp = new int[rows];
-	shifts = shifts % rows;
-
-	for (int j = 0; j < cols; ++j) {
-		if (up) {
-			for (int i = 0; i < shifts; ++i) {
-				temp[i] = array[i][j];
-			}
-			for (int i = shifts; i < rows; ++i) {
-				array[i - shifts][j] = array[i][j];
-			}
-			for (int i = 0; i < shifts; ++i) {
-				array[rows - shifts + i][j] = temp[i];
-			}
-		}
-		else {
-			for (int i = 0; i < shifts; ++i) {
-				temp[i] = array[rows - shifts + i][j];
-			}
-			for (int i = rows - 1; i >= shifts; --i) {
-				array[i][j] = array[i - shifts][j];
-			}
-			for (int i = 0; i < shifts; ++i) {
-				array[i][j] = temp[i];
-			}
-		}
-	}
-
-	delete[] temp;
-}
-
-void freeArray(int** array, int rows, int cols) {
+void freeArray(int** array, int rows) {
 	for (int i = 0; i < rows; ++i) {
 		delete[] array[i];
 	}
@@ -101,39 +56,17 @@ int main() {
 	int cols = 8;
 
 	int** array = createArray(rows, cols);
-	printArray(array, rows, cols);
-
-	int shifts;
-	cout << "Enter number of shifts:" << endl;
-	cin >> shifts;
-
-	char type;
-	cout << "Rows(r) or Columns(c)? ";
-	cin >> type;
-	
-	bool left = false, up = false;
-
-	if (type == 'r') {
-		char direction;
-		cout << "Left (l) or Right (r)? ";
-		cin >> direction;
-		left = (direction == 'l');
-		shiftRows(array, rows, cols, shifts, left);
-	}
-	else if (type == 'c') {
-		char direction;
-		cout << "Up (u) or Down (d)? ";
-		cin >> direction;
-		up = (direction == 'u');
-		shiftColumns(array, rows, cols, shifts, up);
-	}
-	else {
-		cout << "Wrong choice" << endl;
-	}
 
 	printArray(array, rows, cols);
 
-	freeArray(array, rows, cols);
+	int position;
+	cout << "Enter column: ";
+	cin >> position;
+
+	removeColumn(array, rows, cols, position);
+	printArray(array, rows, cols);
+
+	freeArray(array, rows);
 
 	return 0;
 }
