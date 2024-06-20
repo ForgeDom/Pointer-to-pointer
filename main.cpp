@@ -13,6 +13,7 @@ int** createArray(int rows, int cols) {
     return array;
 }
 
+
 void removeRow(int**& array, int& rows, int cols, int position) {
     if (position < 0 || position >= rows) {
         cout << "Wrong line" << endl;
