@@ -25,6 +25,7 @@ void addRow(int**& array, int& rows, int cols, int* newRow) {
         newArray[i + 1] = array[i];
     }
 
+
     delete[] array;
     array = newArray;
     rows++;
