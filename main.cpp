@@ -13,6 +13,7 @@ int** createArray(int rows, int cols) {
 	return array;
 }
 
+
 void shiftRows(int** array, int rows, int cols, int shifts, bool left) {
 	int* temp = new int[cols];
 	shifts = shifts % cols;
