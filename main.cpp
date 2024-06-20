@@ -13,7 +13,6 @@ int** createArray(int rows, int cols) {
     return array;
 }
 
-
 void addColumn(int**& array, int rows, int& cols, int* newCol, int position) {
     if (position < 0 || position > cols) {
         cout << "Wrong line" << endl;
