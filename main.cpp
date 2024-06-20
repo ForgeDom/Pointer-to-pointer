@@ -13,6 +13,7 @@ int** createArray(int rows, int cols) {
     return array;
 }
 
+
 void addRow(int**& array, int& rows, int cols, int* newRow) {
     int** newArray = new int* [rows + 1];
 
