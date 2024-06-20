@@ -67,8 +67,7 @@ int main() {
     cout << "Enter line:" << endl;
     cin >> position;
     removeRow(array, rows, cols, position);
-
-    printArray(array, rows, cols);
+        printArray(array, rows, cols);
 
     freeArray(array, rows);
 
